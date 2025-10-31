@@ -1,0 +1,13 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список студентов</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+
+        <h1>Добро пожаловать на сайт</h1>
+        <a href="{% url 'student_list' %}" class="add-btn">➕ Войти</a>

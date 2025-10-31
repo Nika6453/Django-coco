@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация о студенте</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="card">
+        <h1>{{ student.first_name }} {{ student.last_name }}</h1>
+
+        {% if student.photo %}
+            <img src="{{ student.photo.url }}" alt="{{ student.first_name }}" class="student-photo">
+        {% else %}
+            <img src="{% static 'img/default-avatar.png' %}" alt="Нет фото" class="student-photo">
+        {% endif %}
+
+        <p><strong>Возраст:</strong> {{ student.age }}</p>
+        <p><strong>Группа:</strong> {{ student.group.name }}</p>
+        <p><strong>Куратор группы:</strong> {{ student.group.curator }}</p>
+
+        {% if student.clubs.all %}
+            {% for club in student.clubs.all %}
+            <p><strong>Клубы:</strong> {{ club.name }} </p>
+            {% endfor %}
+        {% else %}
+            <p>Не состоит в клубах</p>
+        {% endif %}
+
+        <a href="{% url 'student_list' %}">← Назад к списку</a>
+    </div>
+</body>
+</html>

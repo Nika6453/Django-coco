@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список студентов</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Выйти</button>
+        </form>
+
+        <h1>Список студентов</h1>
+        <a href="{% url 'add_student' %}" class="add-btn">➕ Добавить нового студента</a>
+
+        {% if students %}
+            {% for student in students %}
+                <div class="student-card">
+                    {% if student.photo %}
+                        <img src="{{ student.photo.url }}" alt="{{ student.first_name }}" class="student-photo">
+                    {% else %}
+                        <img src="{% static 'img/default-avatar.png' %}" alt="Нет фото" class="student-photo">
+                    {% endif %}
+
+                    <div class="student-info">
+                        <strong>{{ student.first_name }} {{ student.last_name }}</strong>
+                        ({{ student.age }} лет, {{ student.group.name }})<br>
+                        Куратор группы: {{ student.group.curator }}
+                        {% if student.clubs.all %}
+                            {% for club in student.clubs.all %}
+                            <h4>Клубы: {{ club.name }}</h4>
+                            {% endfor %}
+                        {% else %}
+                            <p>Не состоит в клубах</p>
+                        {% endif %}
+                        <p>
+                        <a href="{% url 'student_detail' student.id %}">Подробнее</a> |
+                        <a href="{% url 'edit_student' student.id %}">Редактировать</a> |
+                        <a href="{% url 'delete_student' student.id %}">Удалить</a>
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Студентов пока нет.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
